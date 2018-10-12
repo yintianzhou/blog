@@ -211,7 +211,7 @@ db.COLLECTION_NAME.find(query, projection)
 * **query** (可选)查询条件，不传查询所有文档
 * **projection** (可选)用来指定返回的键，不传返回所有键值
 
-简单的查询：
+**全部查询：**
 
 ```
 db.myCollection1.find()
@@ -220,7 +220,7 @@ db.myCollection1.find()
 上面这条命令可以查集合中所有的文档：
 ![](media/15389650489249/15391636062821.jpg)
 
-除了全部查询当然还有单条查询：
+**单条查询：**
 
 ![](media/15389650489249/15391638298295.jpg)
 
@@ -258,4 +258,64 @@ db.myCollection1.find({name:/test/})
 
 ![](media/15389650489249/15391649798440.jpg)
 
+最后补充一点，查询结果如果比较长可以进行格式化方法进行展示：
+
+```
+db.myCollection1.find().pretty()
+```
+![](media/15389650489249/15392511740818.jpg)
+
+#### 更新文档
+
+更新文档和插入文档有些相似：
+
+```
+db.COLLECTION_NAME.update(
+    query,
+    update,
+    {
+        upsert
+        multi
+    }
+)
+```
+
+* **query** 查询条件
+* **update** 更新的对象
+* **upsert** （可选）为真，查询为空时插入文档
+* **multi** （可选）为真，更新所有符合条件的文档
+
+![](media/15389650489249/15393353906637.jpg)
+
+上面的截图中用了`$set`操作符，表示只更新这个字段，如果不加则会将对应的文档替换成`{age:20}`，而不是`{name:"test1",age:20}`。
+
+`update`这个通用方法可以用，但是已经过时，官方提供了`updateOne`和`updateMany`这两个更新文档的方法，具体用法可以去[官方文档](https://docs.mongodb.com/manual/tutorial/update-documents/)上查看。
+
+#### 删除文档
+
+删除文档的方法有：
+
+```
+db.COLLECTION_NAME.remove()
+db.COLLECTION_NAME.deleteOne()
+db.COLLECTION_NAME.deleteMany()
+```
+
+从字面意思也能很容易的看出来`deleteOne`是用来删除多个文档的方法，`deleteMany`是用来删除多个文档的方法，要删除所有文档可以使用：
+
+```
+db.COLLECTION_NAME.deleteMany({})
+```
+
+上面的命令删除了集合下的所有文档，当然也可以直接删除集合来删除所有文档。
+
+`remove`是比较旧的通用方法，运行时需要传入很多参数来控制删除单个文档还是多个文档。
+
+![](media/15389650489249/15393365323300.jpg)
+
+图中就是删除单个文档的效果。
+
+## 总结
+
+这篇文档总结了一下mac下MongoDB如何安装运行，以及基本的数据库CRUD操作，具体使用过程当然会遇上各种其他问题，需要在使用过程中慢慢学习解决。
 
